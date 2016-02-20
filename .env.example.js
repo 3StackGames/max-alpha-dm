@@ -1,0 +1,1 @@
+var G_API_URL='http://api.maxalpha.xyz/v1'
