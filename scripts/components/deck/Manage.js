@@ -3,7 +3,7 @@ import autobind from 'autobind-decorator'
 import { APICall } from '../../libs'
 import { browserHistory } from 'react-router'
 
-export default class Create extends Component {
+export default class Manage extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -15,13 +15,27 @@ export default class Create extends Component {
         structures: []
       }
     }
+
+    if(props.user.active) {
+      const apiGetDeckInfop = new APICall(`/decks?userId=${props.user.id}&deckId=${props.params.deckId}`)
+      apiGetDeckInfop.run(null, (res) => {
+        const { form } = this.state
+
+        this.setState({
+          ...this.state,
+          form: {
+            ...form,
+            ...res.data[0]
+          }
+        })
+      })
+    }
   }
 
   render() {
-    const { notice } = this.state
+    const { notice, form } = this.state
     const cards = this.props.user.cards || []
-    const addedCards = this.state.form.mainCards
-
+    const addedCards = form.mainCards || []
     var counts = {};
 
     for(var i = 0; i< addedCards.length; i++) {
@@ -31,9 +45,9 @@ export default class Create extends Component {
 
     return (
       <form>
-        <h2>Create new deck</h2>
+        <h2>Modify deck</h2>
         <ul className="notice">{notice}</ul>
-        Deck name: <input type="text" name="name" onChange={this.handleInput}/>
+        Deck name: <input type="text" name="name" onChange={this.handleInput} value={form.name} />
         <ul>
         {cards.length == 0 ? <li>You currently have 0 cards</li> : null}
         {cards.map((card, k) => {
@@ -116,7 +130,7 @@ export default class Create extends Component {
       })
     }
 
-    const api = new APICall('/decks', 'POST')
+    const api = new APICall('/decks', 'PUT')
     api.run(form, (res) => {
       if(res.errors !== undefined) {
         const errors = res.errors.map((error, k) => {

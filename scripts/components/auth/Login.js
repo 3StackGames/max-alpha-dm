@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import autobind from 'autobind-decorator'
-import { API_URL } from '../../../.env'
+import { APICall } from '../../libs'
 
 export default class Login extends Component {
   constructor(props) {
@@ -27,7 +27,7 @@ export default class Login extends Component {
         Password: <input type="password" name="password" onChange={this.handleInput} /><br />
         <input type="submit" onClick={this.handlePlayerLogin} />
       </form>
-    );
+    )
   }
 
   @autobind
@@ -48,29 +48,27 @@ export default class Login extends Component {
     e.preventDefault()
     const { userActs } = this.props
 
-    const xhr = new XMLHttpRequest()
-    xhr.onreadystatechange = () => {
-      if (xhr.readyState == XMLHttpRequest.DONE) {
-        const res = JSON.parse(xhr.responseText)
+    const onResponse = (res) => {
 
-        if(res.errors !== undefined) {
-          const errors = res.errors.map((error, k) => {
-            return <li key={k}>{error.title}: {error.detail}</li>
-          })
+      if(res.errors !== undefined) {
+        const errors = res.errors.map((error, k) => {
+          return <li key={k}>{error.title}: {error.detail}</li>
+        })
 
-          this.setState({
-            ...this.state,
-            notice: errors
-          })
+        this.setState({
+          ...this.state,
+          notice: errors
+        })
 
-          return
-        }
-
-        userActs.authLogin(res.data)
+        return
       }
+
+      localStorage.setItem('login', JSON.stringify(res.data))
+
+      userActs.authLogin(res.data)
     }
-    xhr.open('POST', `${API_URL}/authenticate/login`)
-    xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8')
-    xhr.send(JSON.stringify(this.state.form))
+
+    const api = new APICall('/authenticate/login', 'POST')
+    api.run(this.state.form, onResponse)
   }
 }

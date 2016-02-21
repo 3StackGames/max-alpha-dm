@@ -1,38 +1,42 @@
 const AUTH_LOGIN = 'max-alpha-dm/user/AUTH_LOGIN'
+const AUTH_LOGOUT = 'max-alpha-dm/user/AUTH_LOGOUT'
 const SET_USERNAME = 'max-alpha-dm/user/SET_USERNAME'
-const SET_DECK = 'max-alpha-dm/deck/SET_DECK'
+const SET_DECKS = 'max-alpha-dm/deck/SET_DECKS'
 const ADD_DECK = 'max-alpha-dm/deck/ADD_DECK'
-const REMOVE_DECK = 'max-alpha-dm/deck/REMOVE_DECK'
+const SET_CARDS = 'max-alpha-dm/deck/SET_CARDS'
 
 const initialState = {
   active: false,
   username: '',
-  deck: []
+  decks: [],
+  cards: []
 }
 const reducer = (state = initialState, action) => {
   const { type, payload } = action
   switch (type) {
     case AUTH_LOGIN:
       return payload
+    case AUTH_LOGOUT:
+      return initialState
     case SET_USERNAME:
       return {
         ...state,
         username: payload
       }
-    case SET_DECK:
+    case SET_DECKS:
       return {
         ...state,
-        deck: payload
+        decks: payload
       }
     case ADD_DECK:
       return {
         ...state,
-        deck: state.deck.concat(payload)
+        decks: state.decks.concat(payload)
       }
-    case REMOVE_DECK:
+    case SET_CARDS:
       return {
         ...state,
-        deck: state.deck.slice[0, payload].concat(state.deck.slice[payload])
+        cards: payload
       }
     default:
       return state
@@ -46,10 +50,30 @@ export const authLogin = (user) => {
   }
 }
 
+export const authLogout = () => {
+  return {
+    type: AUTH_LOGOUT
+  }
+}
+
 export const setUsername = (username) => {
   return {
     type: SET_USERNAME,
     payload: username
+  }
+}
+
+export const setDecks = (decks) => {
+  return {
+    type: SET_DECKS,
+    payload: decks
+  }
+}
+
+export const setCards = (decks) => {
+  return {
+    type: SET_DECKS,
+    payload: decks
   }
 }
 

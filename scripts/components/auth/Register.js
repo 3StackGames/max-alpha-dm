@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import autobind from 'autobind-decorator'
-import { API_URL } from '../../../.env'
+import { APICall } from '../../libs'
 
 export default class Register extends Component {
   constructor(props) {
@@ -68,17 +68,12 @@ export default class Register extends Component {
       return
     }
 
-    const xhr = new XMLHttpRequest()
-    xhr.onreadystatechange = () => {
-      if (xhr.readyState != XMLHttpRequest.DONE) {
-        return
-      }
-
-      const res = JSON.parse(xhr.responseText)
-      const notice
+    const onResponse = (res) => {
+      let notice = null
 
       if(res.errors == undefined) {
         userActs.setUsername(username)
+        this.props.toggleAuth()
         return
       }
 
@@ -90,10 +85,9 @@ export default class Register extends Component {
         ...this.state,
         notice
       })
-
     }
-    xhr.open('POST', `${API_URL}/users`)
-    xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8')
-    xhr.send(JSON.stringify(this.state.form))
+
+    const api = new APICall('/users', 'POST')
+    api.run(this.state.form, onResponse)
   }
 }

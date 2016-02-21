@@ -1,2 +1,2 @@
-export {default as Dashboard} from './Dashboard'
+export {default as deck} from './deck'
 export {default as auth} from './auth'
