@@ -18,15 +18,15 @@ export default class Create extends Component {
   }
 
   render() {
-    const { notice } = this.state
+    const { notice, form } = this.state
     const cards = this.props.user.cards || []
-    const addedCards = this.state.form.mainCards
+    const mainCards = form.mainCards || []
 
-    var counts = {};
+    let counts = {};
 
-    for(var i = 0; i< addedCards.length; i++) {
-        var num = addedCards[i];
-        counts[num] = counts[num] ? counts[num] + 1 : 1;
+    for(let i = 0; i < mainCards.length; i++) {
+        let num = mainCards[i]
+        counts[num] = counts[num] ? counts[num] + 1 : 1
     }
 
     return (
@@ -57,11 +57,12 @@ export default class Create extends Component {
   @autobind
   handleInput(e) {
     const target = e.target
-    const state = this.state
+    const { notice, form } = this.state
+
     this.setState({
-      notice: state.notice,
+      notice: notice,
       form: {
-        ...state.form,
+        ...form,
         [target.name]: target.value
       }
     })
@@ -71,10 +72,10 @@ export default class Create extends Component {
   handleAddCard(e) {
     e.preventDefault()
     const cardId = e.target.getAttribute('data-id')
-    const { form } = this.state
+    const { notice, form } = this.state
 
     this.setState({
-      ...this.state,
+      notice: notice,
       form: {
         ...form,
         mainCards: form.mainCards.concat(cardId)
@@ -86,19 +87,19 @@ export default class Create extends Component {
   handleRemoveCard(e) {
     e.preventDefault()
     const cardId = e.target.getAttribute('data-id')
-    const { form } = this.state
-    const { mainCards: cards } = form
-    const firstFound = cards.indexOf(cardId)
+    const { notice, form } = this.state
+    const { mainCards } = form
+    const firstFound = mainCards.indexOf(cardId)
 
     if(firstFound < 0) {
       return
     }
 
     this.setState({
-      ...this.state,
+      notice: notice,
       form: {
         ...form,
-        mainCards: cards.slice(0, firstFound).concat(cards.slice(firstFound + 1))
+        mainCards: mainCards.slice(0, firstFound).concat(mainCards.slice(firstFound + 1))
       }
     })
   }

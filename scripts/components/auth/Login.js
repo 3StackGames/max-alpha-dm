@@ -33,11 +33,11 @@ export default class Login extends Component {
   @autobind
   handleInput(e) {
     const target = e.target
-    const state = this.state
+    const { notice, form } = this.state
     this.setState({
-      notice: state.notice,
+      notice: notice,
       form: {
-        ...state.form,
+        ...form,
         [target.name]: target.value
       }
     })
@@ -48,8 +48,8 @@ export default class Login extends Component {
     e.preventDefault()
     const { userActs } = this.props
 
-    const onResponse = (res) => {
-
+    const api = new APICall('/authenticate/login', 'POST')
+    api.run(this.state.form, (res) => {
       if(res.errors !== undefined) {
         const errors = res.errors.map((error, k) => {
           return <li key={k}>{error.title}: {error.detail}</li>
@@ -64,11 +64,7 @@ export default class Login extends Component {
       }
 
       localStorage.setItem('login', JSON.stringify(res.data))
-
       userActs.authLogin(res.data)
-    }
-
-    const api = new APICall('/authenticate/login', 'POST')
-    api.run(this.state.form, onResponse)
+    })
   }
 }

@@ -9,9 +9,6 @@ export default class Login extends Component {
   }
 
   render() {
-    const { notice } = this.state
-    const { user } = this.props
-
     return (
       <div>
         <a href="#" onClick={this.handleLogout}>Logout</a>

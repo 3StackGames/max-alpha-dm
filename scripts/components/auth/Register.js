@@ -34,12 +34,12 @@ export default class Register extends Component {
   @autobind
   handleInput(e) {
     const target = e.target
-    const state = this.state
+    const { notice, form } = this.state
 
     this.setState({
-      notice: state.notice,
+      notice: notice,
       form: {
-        ...state.form,
+        ...form,
         [target.name]: target.value
       }
     })
@@ -68,7 +68,8 @@ export default class Register extends Component {
       return
     }
 
-    const onResponse = (res) => {
+    const api = new APICall('/users', 'POST')
+    api.run(this.state.form, (res) => {
       let notice = null
 
       if(res.errors == undefined) {
@@ -85,9 +86,6 @@ export default class Register extends Component {
         ...this.state,
         notice
       })
-    }
-
-    const api = new APICall('/users', 'POST')
-    api.run(this.state.form, onResponse)
+    })
   }
 }

@@ -3,7 +3,6 @@ const AUTH_LOGOUT = 'max-alpha-dm/user/AUTH_LOGOUT'
 const SET_USERNAME = 'max-alpha-dm/user/SET_USERNAME'
 const SET_DECKS = 'max-alpha-dm/deck/SET_DECKS'
 const ADD_DECK = 'max-alpha-dm/deck/ADD_DECK'
-const SET_CARDS = 'max-alpha-dm/deck/SET_CARDS'
 
 const initialState = {
   active: false,
@@ -33,11 +32,6 @@ const reducer = (state = initialState, action) => {
         ...state,
         decks: state.decks.concat(payload)
       }
-    case SET_CARDS:
-      return {
-        ...state,
-        cards: payload
-      }
     default:
       return state
   }
@@ -64,13 +58,6 @@ export const setUsername = (username) => {
 }
 
 export const setDecks = (decks) => {
-  return {
-    type: SET_DECKS,
-    payload: decks
-  }
-}
-
-export const setCards = (decks) => {
   return {
     type: SET_DECKS,
     payload: decks

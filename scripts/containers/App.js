@@ -20,7 +20,6 @@ export default class App extends Component {
         login = JSON.parse(login)
         this.userActs.authLogin(login)
       } catch(e) {
-        console.log('auth invalid json')
         localStorage.removeItem('login')
       }
     }

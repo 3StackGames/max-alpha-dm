@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as userActs from '../ducks/user'
 import autobind from 'autobind-decorator'
-import { auth, deck } from '../components'
+import { auth } from '../components'
 import { browserHistory } from 'react-router'
 
 @connect((state) => ({
@@ -20,15 +20,11 @@ export default class Landing extends Component {
   }
 
   componentWillMount() {
-    if(this.props.user.active) {
-      browserHistory.push('/deck')
-    }
+    this.checkIfLogged(this.props)
   }
 
   componentWillUpdate(nextProps, nextState) {
-    if(nextProps.user.active) {
-      browserHistory.push('/deck')
-    }
+    this.checkIfLogged(nextProps)
   }
 
   render() {
@@ -55,6 +51,12 @@ export default class Landing extends Component {
         <a href="#" onClick={this.toggleAuth}>{text}</a>
       </div>
     )
+  }
+
+  checkIfLogged(props) {
+    if(props.user.active) {
+      browserHistory.push('/deck')
+    }
   }
 
   @autobind

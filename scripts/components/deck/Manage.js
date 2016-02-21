@@ -19,10 +19,10 @@ export default class Manage extends Component {
     if(props.user.active) {
       const apiGetDeckInfop = new APICall(`/decks?userId=${props.user.id}&deckId=${props.params.deckId}`)
       apiGetDeckInfop.run(null, (res) => {
-        const { form } = this.state
+        const { notice, form } = this.state
 
         this.setState({
-          ...this.state,
+          notice: notice,
           form: {
             ...form,
             ...res.data[0]
@@ -35,12 +35,12 @@ export default class Manage extends Component {
   render() {
     const { notice, form } = this.state
     const cards = this.props.user.cards || []
-    const addedCards = form.mainCards || []
-    var counts = {};
+    const mainCards = form.mainCards || []
+    let counts = {};
 
-    for(var i = 0; i< addedCards.length; i++) {
-        var num = addedCards[i];
-        counts[num] = counts[num] ? counts[num] + 1 : 1;
+    for(let i = 0; i < mainCards.length; i++) {
+        let num = mainCards[i]
+        counts[num] = counts[num] ? counts[num] + 1 : 1
     }
 
     return (
@@ -71,11 +71,11 @@ export default class Manage extends Component {
   @autobind
   handleInput(e) {
     const target = e.target
-    const state = this.state
+    const { notice, form } = this.state
     this.setState({
-      notice: state.notice,
+      notice: notice,
       form: {
-        ...state.form,
+        ...form,
         [target.name]: target.value
       }
     })
@@ -85,10 +85,10 @@ export default class Manage extends Component {
   handleAddCard(e) {
     e.preventDefault()
     const cardId = e.target.getAttribute('data-id')
-    const { form } = this.state
+    const { notice, form } = this.state
 
     this.setState({
-      ...this.state,
+      notice: notice,
       form: {
         ...form,
         mainCards: form.mainCards.concat(cardId)
@@ -100,19 +100,19 @@ export default class Manage extends Component {
   handleRemoveCard(e) {
     e.preventDefault()
     const cardId = e.target.getAttribute('data-id')
-    const { form } = this.state
-    const { mainCards: cards } = form
-    const firstFound = cards.indexOf(cardId)
+    const { notice, form } = this.state
+    const mainCards = form.mainCards || []
+    const firstFound = mainCards.indexOf(cardId)
 
     if(firstFound < 0) {
       return
     }
 
     this.setState({
-      ...this.state,
+      notice: notice,
       form: {
         ...form,
-        mainCards: cards.slice(0, firstFound).concat(cards.slice(firstFound + 1))
+        mainCards: mainCards.slice(0, firstFound).concat(mainCards.slice(firstFound + 1))
       }
     })
   }

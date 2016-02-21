@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as userActs from '../ducks/user'
 import autobind from 'autobind-decorator'
-import { auth, deck } from '../components'
+import { deck } from '../components'
 import { Link } from 'react-router'
 import { bindAuth } from '../libs'
 
@@ -24,8 +24,8 @@ export default class DeckManage extends Component {
 
   render() {
     const { params } = this.props
-    const deckId = params.deckId
     const { Show, Create, Manage } = deck
+    const deckId = params.deckId
     const props = {
       ...this.props,
       userActs: this.userActs
