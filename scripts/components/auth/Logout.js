@@ -10,8 +10,8 @@ export default class Login extends Component {
 
   render() {
     return (
-      <div>
-        <a href="#" onClick={this.handleLogout}>Logout</a>
+      <div className="logout">
+        <a href="#" onClick={this.handleLogout}>&laquo; Logout</a>
       </div>
     )
   }

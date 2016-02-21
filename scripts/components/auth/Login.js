@@ -22,9 +22,15 @@ export default class Login extends Component {
     return (
       <form>
         <h2>Login</h2>
-        <ul className="notice">{notice}</ul>
-        Username: <input type="text" name="username" onChange={this.handleInput} defaultValue={user.username} /><br />
-        Password: <input type="password" name="password" onChange={this.handleInput} /><br />
+        <ul className={"notice" + (notice ? ' has-errors' : null)}>{notice}</ul>
+        <div className="input-group">
+          <label htmlFor="login-username">Username:</label>
+          <input id="login-username" type="text" name="username" onChange={this.handleInput} defaultValue={user.username} />
+        </div>
+        <div className="input-group">
+          <label htmlFor="login-password">Password:</label>
+          <input id="login-password" type="password" name="password" onChange={this.handleInput} />
+        </div>
         <input type="submit" onClick={this.handlePlayerLogin} />
       </form>
     )

@@ -32,8 +32,11 @@ export default class Create extends Component {
     return (
       <form>
         <h2>Create new deck</h2>
-        <ul className="notice">{notice}</ul>
-        Deck name: <input type="text" name="name" onChange={this.handleInput}/>
+        <ul className={"notice" + (notice ? ' has-errors' : null)}>{notice}</ul>
+        <div className="input-group">
+          <label htmlFor="create-name">Deck name:</label>
+          <input id="create-name" type="text" name="name" onChange={this.handleInput}/>
+        </div>
         <ul>
         {cards.length == 0 ? <li>You currently have 0 cards</li> : null}
         {cards.map((card, k) => {
@@ -49,7 +52,10 @@ export default class Create extends Component {
           )
         })}
         </ul>
-        <input type="submit" onClick={this.handleCreateDeck}/>
+        <div className="input-group">
+          <input type="submit" onClick={this.handleCreateDeck} />
+        </div>
+        <input type="button" onClick={() => { browserHistory.push('/deck') }} value="Cancel" />
       </form>
     )
   }
@@ -115,6 +121,8 @@ export default class Create extends Component {
         ...this.state,
         notice: <li>Invalid Properties: Missing name</li>
       })
+
+      return
     }
 
     const api = new APICall('/decks', 'POST')

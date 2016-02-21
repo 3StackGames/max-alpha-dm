@@ -22,10 +22,19 @@ export default class Register extends Component {
     return (
       <form>
         <h2>Register</h2>
-        <ul className="notice">{notice}</ul>
-        Username: <input type="text" name="username" onChange={this.handleInput} /><br />
-        Password: <input type="password" name="password" onChange={this.handleInput} /><br />
-        Verify Password: <input type="password" name="repassword" onChange={this.handleInput} /><br />
+        <ul className={"notice" + (notice ? ' has-errors' : null)}>{notice}</ul>
+        <div className="input-group">
+          <label htmlFor="register-username">Username:</label>
+          <input id="register-username" type="text" name="username" onChange={this.handleInput} />
+        </div>
+        <div className="input-group">
+          <label htmlFor="register-password">Password:</label>
+          <input id="register-password" type="password" name="password" onChange={this.handleInput} />
+        </div>
+        <div className="input-group">
+          <label htmlFor="register-repassword">Verify Password:</label>
+          <input id="register-repassword" type="password" name="repassword" onChange={this.handleInput} />
+        </div>
         <input type="submit" onClick={this.handlePlayerRegister} />
       </form>
     )
